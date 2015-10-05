@@ -34,4 +34,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="scan_error_invalid_format">Invalid Barcode Format</string>
+    <string name="search_error_no_internet">Cannot search - no internet connection</string>
 </resources>

@@ -145,7 +145,11 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 
     private void restartLoader()
     {
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
+        LoaderManager manager = getLoaderManager();
+        if (manager.getLoader(LOADER_ID) != null)
+        {
+            manager.restartLoader(LOADER_ID, null, this);
+        }
     }
 
     @Override
@@ -160,9 +164,21 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         {
             eanStr = "978" + eanStr;
         }
+        long barcodeNumber;
+        try
+        {
+            barcodeNumber = Long.parseLong(eanStr);
+        }
+        catch (NumberFormatException ignored)
+        {
+            Toast.makeText(getActivity(), getText(R.string.scan_error_invalid_format), Toast.LENGTH_LONG).show();
+            _ean.setText("");
+            return null;
+        }
+
         return new CursorLoader(
                 getActivity(),
-                AlexandriaContract.BookEntry.buildFullBookUri(Long.parseLong(eanStr)),
+                AlexandriaContract.BookEntry.buildFullBookUri(barcodeNumber),
                 null,
                 null,
                 null,

@@ -2,9 +2,13 @@ package au.com.zacher.alexandria.services;
 
 import android.app.IntentService;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -39,6 +43,9 @@ public class BookService extends IntentService
     public static final String DELETE_BOOK = "au.com.zacher.alexandria.services.action.DELETE_BOOK";
 
     public static final String EAN = "au.com.zacher.alexandria.services.extra.EAN";
+
+    // the handler to run toasts on the main thread
+    private Handler handler;
 
     public BookService()
     {
@@ -95,7 +102,7 @@ public class BookService extends IntentService
         }
         catch (NumberFormatException ignored)
         {
-            Toast.makeText(this.getBaseContext(), this.getText(R.string.scan_error_invalid_format), Toast.LENGTH_LONG).show();
+            showToast(R.string.scan_error_invalid_format);
             return;
         }
 
@@ -115,6 +122,15 @@ public class BookService extends IntentService
         }
 
         bookEntry.close();
+
+        // check for an internet connection first
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo         activeNetworkInfo   = connectivityManager.getActiveNetworkInfo();
+        if (activeNetworkInfo == null || activeNetworkInfo.isConnected())
+        {
+            showToast(R.string.search_error_no_internet);
+            return;
+        }
 
         HttpURLConnection urlConnection  = null;
         BufferedReader    reader         = null;
@@ -193,6 +209,7 @@ public class BookService extends IntentService
         final String CATEGORIES   = "categories";
         final String IMG_URL_PATH = "imageLinks";
         final String IMG_URL      = "thumbnail";
+
 
         try
         {
@@ -283,5 +300,24 @@ public class BookService extends IntentService
             getContentResolver().insert(AlexandriaContract.CategoryEntry.CONTENT_URI, values);
             values = new ContentValues();
         }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        handler = new Handler();
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void showToast(final int msgId)
+    {
+        handler.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Toast.makeText(getApplicationContext(), getText(msgId), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
