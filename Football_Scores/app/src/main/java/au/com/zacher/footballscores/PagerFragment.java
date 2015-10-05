@@ -2,7 +2,6 @@ package au.com.zacher.footballscores;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Created by yehya khaled on 2/27/2015.
@@ -25,7 +23,7 @@ public class PagerFragment extends Fragment
     public static final int NUM_PAGES = 5;
 
     public ViewPager pagerHandler;
-    private MainScreenFragment[] _viewFragments = new MainScreenFragment[5];
+    private MainScreenFragment[] _viewFragments = new MainScreenFragment[NUM_PAGES];
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -47,16 +45,7 @@ public class PagerFragment extends Fragment
 
     private long calculateTime(int position)
     {
-        long time = System.currentTimeMillis();
-        // reverse the pager direction on RTL languages
-        if (Utilities.isRTL(this.getActivity()))
-        {
-            time -= (position - 2) * 86400000;
-        }
-        else
-        {
-            time += (position - 2) * 86400000;
-        }
+        long time = System.currentTimeMillis() + (position - 2) * 86400000;
         return time;
     }
 
@@ -65,7 +54,19 @@ public class PagerFragment extends Fragment
         @Override
         public Fragment getItem(int i)
         {
+            i = getPosition(i);
             return _viewFragments[i];
+        }
+
+        private int getPosition(int i)
+        {
+            // reverse the pager direction on RTL languages
+            if (Utilities.isRTL(pagerHandler.getContext()))
+            {
+                int newI = (NUM_PAGES - i - 1) % NUM_PAGES;
+                i = newI;
+            }
+            return i;
         }
 
         @Override

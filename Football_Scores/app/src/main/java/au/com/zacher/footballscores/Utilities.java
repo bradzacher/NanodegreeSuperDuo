@@ -3,6 +3,7 @@ package au.com.zacher.footballscores;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 /**
@@ -117,11 +118,12 @@ public class Utilities
     public static Drawable getTeamCrestByTeamName(String teamName, Context context)
     {
         int drawableId = Utilities.getTeamCrestByTeamName(teamName);
-        return context.getDrawable(drawableId);
+        return ContextCompat.getDrawable(context, drawableId);
     }
 
-    public static boolean isRTL(Context context) {
+    public static boolean isRTL(Context context)
+    {
         Configuration config = context.getResources().getConfiguration();
-        return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL; // will always return LTR on android < 17
+        return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     }
 }

@@ -25,11 +25,16 @@ public class MainActivity extends ActionBarActivity
         Log.d(LOG_TAG, "Reached MainActivity onCreate");
         if (savedInstanceState == null)
         {
-            _myMain = new PagerFragment();
-            getSupportFragmentManager().beginTransaction()
-                                       .add(R.id.container, _myMain)
-                                       .commit();
+            initMyMain();
         }
+    }
+
+    private void initMyMain()
+    {
+        _myMain = new PagerFragment();
+        getSupportFragmentManager().beginTransaction()
+                                   .add(R.id.container, _myMain)
+                                   .commit();
     }
 
 
@@ -63,11 +68,15 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onSaveInstanceState(Bundle outState)
     {
+        boolean isRtl = Utilities.isRTL(this);
         Log.v(SAVE_TAG, "will save");
         Log.v(SAVE_TAG, "fragment: " + String.valueOf(_myMain.pagerHandler.getCurrentItem()));
         Log.v(SAVE_TAG, "selected id: " + selectedMatchId);
+        Log.v(SAVE_TAG, "is rtl: " + isRtl);
+
         outState.putInt("Pager_Current", _myMain.pagerHandler.getCurrentItem());
         outState.putInt("Selected_match", selectedMatchId);
+        outState.putBoolean("Is_RTL", isRtl);
         getSupportFragmentManager().putFragment(outState, "_myMain", _myMain);
         super.onSaveInstanceState(outState);
     }
@@ -75,12 +84,24 @@ public class MainActivity extends ActionBarActivity
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState)
     {
-        Log.v(SAVE_TAG, "will retrive");
-        Log.v(SAVE_TAG, "fragment: " + String.valueOf(savedInstanceState.getInt("Pager_Current")));
-        Log.v(SAVE_TAG, "selected id: " + savedInstanceState.getInt("Selected_match"));
-        currentFragment = savedInstanceState.getInt("Pager_Current");
-        selectedMatchId = savedInstanceState.getInt("Selected_match");
-        _myMain = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "_myMain");
+        boolean isRtl = savedInstanceState.getBoolean("Is_RTL");
+        if (isRtl == Utilities.isRTL(this))
+        {
+            Log.v(SAVE_TAG, "will retrive");
+            Log.v(SAVE_TAG, "fragment: " + String.valueOf(savedInstanceState.getInt("Pager_Current")));
+            Log.v(SAVE_TAG, "selected id: " + savedInstanceState.getInt("Selected_match"));
+
+            currentFragment = savedInstanceState.getInt("Pager_Current");
+            selectedMatchId = savedInstanceState.getInt("Selected_match");
+            _myMain = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "_myMain");
+        }
+        else
+        {
+            Log.v(SAVE_TAG, "will not retrive - changed language state");
+            _myMain = (PagerFragment) getSupportFragmentManager().getFragment(savedInstanceState, "_myMain");
+            getSupportFragmentManager().beginTransaction().remove(_myMain).commit();
+            initMyMain();
+        }
         super.onRestoreInstanceState(savedInstanceState);
     }
 }
