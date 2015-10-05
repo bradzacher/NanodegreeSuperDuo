@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import au.com.zacher.footballscores.service.myFetchService;
+import au.com.zacher.footballscores.service.MyFetchService;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,7 +32,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
 
     private void updateScores()
     {
-        Intent service_start = new Intent(getActivity(), myFetchService.class);
+        Intent service_start = new Intent(getActivity(), MyFetchService.class);
         getActivity().startService(service_start);
     }
 
