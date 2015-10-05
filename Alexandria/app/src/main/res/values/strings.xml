@@ -30,9 +30,7 @@
         Barcode scanning functionality provided by the ZXing library (https://github.com/zxing/zxing/) care of the ZXing Android Embedded library (https://github.com/journeyapps/zxing-android-embedded).
         The original version of this app was built by Sascha Jaschke.
         This version was modified and fixed by Brad Zacher as part of the Udacity Android Nanodegree program.</string>
-    <string name="title_activity_barcode_scan">BarcodeScan</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="scan_error_invalid_format">Invalid Barcode Format</string>
     <string name="search_error_no_internet">Cannot search - no internet connection</string>
 </resources>

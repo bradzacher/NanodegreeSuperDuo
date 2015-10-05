@@ -95,6 +95,7 @@ public class BookService extends IntentService
             return;
         }
 
+        // make sure that the barcode is in the correct format
         long barcode;
         try
         {
@@ -126,7 +127,7 @@ public class BookService extends IntentService
         // check for an internet connection first
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo         activeNetworkInfo   = connectivityManager.getActiveNetworkInfo();
-        if (activeNetworkInfo == null || activeNetworkInfo.isConnected())
+        if (activeNetworkInfo == null || !activeNetworkInfo.isConnected())
         {
             showToast(R.string.search_error_no_internet);
             return;

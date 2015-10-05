@@ -146,6 +146,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private void restartLoader()
     {
         LoaderManager manager = getLoaderManager();
+        // make sure we have a loader before trying to restart it
         if (manager.getLoader(LOADER_ID) != null)
         {
             manager.restartLoader(LOADER_ID, null, this);
@@ -164,6 +165,8 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         {
             eanStr = "978" + eanStr;
         }
+
+        // make sure that the barcode is in the correct format
         long barcodeNumber;
         try
         {
