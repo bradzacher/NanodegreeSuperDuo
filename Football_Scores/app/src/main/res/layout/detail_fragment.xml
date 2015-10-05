@@ -32,23 +32,18 @@
             tools:text="Matchday: 0"/>
     </LinearLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/share_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp">
-
-        <Button
-            android:id="@+id/share_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/share_text"
-            android:drawableLeft="@android:drawable/ic_menu_share"
-            android:drawableStart="@android:drawable/ic_menu_share"
-            android:gravity="center"
-            android:paddingLeft="120dp"
-            android:paddingRight="120dp"
-            android:text="@string/share_text"/>
-    </FrameLayout>
+        android:layout_gravity="center"
+        android:contentDescription="@string/share_text"
+        android:drawablePadding="8dp"
+        android:drawableLeft="@android:drawable/ic_menu_share"
+        android:drawableStart="@android:drawable/ic_menu_share"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="@string/share_text"/>
 
 </LinearLayout>
