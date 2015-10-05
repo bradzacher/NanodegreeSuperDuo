@@ -23,62 +23,71 @@ import au.com.zacher.alexandria.services.BookService;
 import au.com.zacher.alexandria.services.DownloadImage;
 
 
-public class BookDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class BookDetail extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
+{
 
-    public static final String EAN_KEY = "EAN";
-    private final int LOADER_ID = 10;
-    private View rootView;
-    private String ean;
-    private String bookTitle;
-    private ShareActionProvider shareActionProvider;
+    public static final String EAN_KEY   = "EAN";
+    private final       int    LOADER_ID = 10;
+    private View                _rootView;
+    private String              _ean;
+    private String              _bookTitle;
+    private ShareActionProvider _shareActionProvider;
 
-    public BookDetail(){
+    public BookDetail()
+    {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
     }
 
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
 
         Bundle arguments = getArguments();
-        if (arguments != null) {
-            ean = arguments.getString(BookDetail.EAN_KEY);
+        if (arguments != null)
+        {
+            _ean = arguments.getString(BookDetail.EAN_KEY);
             getLoaderManager().restartLoader(LOADER_ID, null, this);
         }
 
-        rootView = inflater.inflate(R.layout.fragment_full_book, container, false);
-        rootView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
+        _rootView = inflater.inflate(R.layout.fragment_full_book, container, false);
+        _rootView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent bookIntent = new Intent(getActivity(), BookService.class);
-                bookIntent.putExtra(BookService.EAN, ean);
+                bookIntent.putExtra(BookService.EAN, _ean);
                 bookIntent.setAction(BookService.DELETE_BOOK);
                 getActivity().startService(bookIntent);
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
-        return rootView;
+        return _rootView;
     }
 
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
         inflater.inflate(R.menu.book_detail, menu);
 
         MenuItem menuItem = menu.findItem(R.id.action_share);
-        shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        _shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
     }
 
     @Override
-    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
         return new CursorLoader(
                 getActivity(),
-                AlexandriaContract.BookEntry.buildFullBookUri(Long.parseLong(ean)),
+                AlexandriaContract.BookEntry.buildFullBookUri(Long.parseLong(_ean)),
                 null,
                 null,
                 null,
@@ -87,54 +96,61 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
     }
 
     @Override
-    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
-        if (!data.moveToFirst()) {
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data)
+    {
+        if (!data.moveToFirst())
+        {
             return;
         }
 
-        bookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
-        ((TextView) rootView.findViewById(R.id.fullBookTitle)).setText(bookTitle);
+        _bookTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.TITLE));
+        ((TextView) _rootView.findViewById(R.id.fullBookTitle)).setText(_bookTitle);
 
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text)+bookTitle);
-        shareActionProvider.setShareIntent(shareIntent);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text) + _bookTitle);
+        _shareActionProvider.setShareIntent(shareIntent);
 
         String bookSubTitle = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.SUBTITLE));
-        ((TextView) rootView.findViewById(R.id.fullBookSubTitle)).setText(bookSubTitle);
+        ((TextView) _rootView.findViewById(R.id.fullBookSubTitle)).setText(bookSubTitle);
 
         String desc = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.DESC));
-        ((TextView) rootView.findViewById(R.id.fullBookDesc)).setText(desc);
+        ((TextView) _rootView.findViewById(R.id.fullBookDesc)).setText(desc);
 
-        String authors = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
+        String   authors    = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
         String[] authorsArr = authors.split(",");
-        ((TextView) rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) rootView.findViewById(R.id.authors)).setText(authors.replace(",","\n"));
+        ((TextView) _rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
+        ((TextView) _rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
-        if(Patterns.WEB_URL.matcher(imgUrl).matches()){
-            new DownloadImage((ImageView) rootView.findViewById(R.id.fullBookCover)).execute(imgUrl);
-            rootView.findViewById(R.id.fullBookCover).setVisibility(View.VISIBLE);
+        if (Patterns.WEB_URL.matcher(imgUrl).matches())
+        {
+            new DownloadImage((ImageView) _rootView.findViewById(R.id.fullBookCover)).execute(imgUrl);
+            _rootView.findViewById(R.id.fullBookCover).setVisibility(View.VISIBLE);
         }
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
-        ((TextView) rootView.findViewById(R.id.categories)).setText(categories);
+        ((TextView) _rootView.findViewById(R.id.categories)).setText(categories);
 
-        if(rootView.findViewById(R.id.right_container)!=null){
-            rootView.findViewById(R.id.backButton).setVisibility(View.INVISIBLE);
+        if (_rootView.findViewById(R.id.right_container) != null)
+        {
+            _rootView.findViewById(R.id.backButton).setVisibility(View.INVISIBLE);
         }
 
     }
 
     @Override
-    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader)
+    {
 
     }
 
     @Override
-    public void onPause() {
+    public void onPause()
+    {
         super.onDestroyView();
-        if(MainActivity.IS_TABLET && rootView.findViewById(R.id.right_container)==null){
+        if (MainActivity.IS_TABLET && _rootView.findViewById(R.id.right_container) == null)
+        {
             getActivity().getSupportFragmentManager().popBackStack();
         }
     }
