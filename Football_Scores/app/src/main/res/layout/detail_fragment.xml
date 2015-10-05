@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical">
 
     <LinearLayout
@@ -15,9 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/test_text"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/League"/>
+            android:textSize="@dimen/League"
+            tools:text="League Name"/>
 
         <TextView
             android:id="@+id/matchday_textview"
@@ -27,7 +28,8 @@
             android:gravity="center"
             android:text="@string/test_text"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/League"/>
+            android:textSize="@dimen/League"
+            tools:text="Matchday: 0"/>
     </LinearLayout>
 
     <FrameLayout
@@ -42,6 +44,7 @@
             android:layout_gravity="center"
             android:contentDescription="@string/share_text"
             android:drawableLeft="@android:drawable/ic_menu_share"
+            android:drawableStart="@android:drawable/ic_menu_share"
             android:gravity="center"
             android:paddingLeft="120dp"
             android:paddingRight="120dp"

@@ -1,6 +1,8 @@
 package au.com.zacher.footballscores;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -22,8 +24,7 @@ public class PagerFragment extends Fragment
 {
     public static final int NUM_PAGES = 5;
 
-    public  ViewPager     pagerHandler;
-    private myPageAdapter _pagerAdapter;
+    public ViewPager pagerHandler;
     private MainScreenFragment[] _viewFragments = new MainScreenFragment[5];
 
     @Override
@@ -31,20 +32,35 @@ public class PagerFragment extends Fragment
     {
         View rootView = inflater.inflate(R.layout.pager_fragment, container, false);
         pagerHandler = (ViewPager) rootView.findViewById(R.id.pager);
-        _pagerAdapter = new myPageAdapter(getChildFragmentManager());
+        PageAdapter _pagerAdapter = new PageAdapter(getChildFragmentManager());
+
         for (int i = 0; i < NUM_PAGES; i++)
         {
-            Date fragmentdate = new Date(System.currentTimeMillis() + ((i - 2) * 86400000));
-            SimpleDateFormat mformat = new SimpleDateFormat("yyyy-MM-dd");
             _viewFragments[i] = new MainScreenFragment();
-            _viewFragments[i].setFragmentDate(mformat.format(fragmentdate));
+            _viewFragments[i].setFragmentDate(calculateTime(i));
         }
         pagerHandler.setAdapter(_pagerAdapter);
         pagerHandler.setCurrentItem(MainActivity.currentFragment);
+
         return rootView;
     }
 
-    private class myPageAdapter extends FragmentStatePagerAdapter
+    private long calculateTime(int position)
+    {
+        long time = System.currentTimeMillis();
+        // reverse the pager direction on RTL languages
+        if (Utilities.isRTL(this.getActivity()))
+        {
+            time -= (position - 2) * 86400000;
+        }
+        else
+        {
+            time += (position - 2) * 86400000;
+        }
+        return time;
+    }
+
+    private class PageAdapter extends FragmentStatePagerAdapter
     {
         @Override
         public Fragment getItem(int i)
@@ -58,16 +74,18 @@ public class PagerFragment extends Fragment
             return NUM_PAGES;
         }
 
-        public myPageAdapter(FragmentManager fm)
+        public PageAdapter(FragmentManager fm)
         {
             super(fm);
         }
 
         // Returns the page title for the top indicator
+        @SuppressLint("NewApi")
         @Override
         public CharSequence getPageTitle(int position)
         {
-            return getDayName(getActivity(), System.currentTimeMillis() + ((position - 2) * 86400000));
+            MainScreenFragment fragment = (MainScreenFragment)this.getItem(position);
+            return getDayName(getActivity(), fragment.getFragmentDate());
         }
 
         public String getDayName(Context context, long dateInMillis)

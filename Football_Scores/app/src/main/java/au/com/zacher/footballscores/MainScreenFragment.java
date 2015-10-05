@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import au.com.zacher.footballscores.service.MyFetchService;
 
 /**
@@ -25,6 +28,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public ScoresAdapter adapter;
     private String[] _fragmentDate     = new String[1];
     private int      _lastSelectedItem = -1;
+    private long _fragmentDateLong;
 
     public MainScreenFragment()
     {
@@ -36,9 +40,17 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
         getActivity().startService(service_start);
     }
 
-    public void setFragmentDate(String date)
+    public void setFragmentDate(long date)
     {
-        _fragmentDate[0] = date;
+        _fragmentDateLong = date;
+        Date fragmentDate = new Date(date);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        _fragmentDate[0] = format.format(fragmentDate);
+    }
+
+    public long getFragmentDate()
+    {
+        return _fragmentDateLong;
     }
 
     @Override
@@ -68,8 +80,7 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle)
     {
-        return new CursorLoader(getActivity(), DatabaseContract.ScoresTable.buildScoreWithDate(),
-                                null, null, _fragmentDate, null);
+        return new CursorLoader(getActivity(), DatabaseContract.ScoresTable.buildScoreWithDate(), null, null, _fragmentDate, null);
     }
 
     @Override

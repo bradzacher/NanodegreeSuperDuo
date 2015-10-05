@@ -1,5 +1,6 @@
 package au.com.zacher.footballscores;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -43,23 +44,23 @@ public class ScoresAdapter extends CursorAdapter
         return mItem;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public void bindView(View view, final Context context, Cursor cursor)
     {
         final ViewHolder holder = (ViewHolder) view.getTag();
         holder.homeName.setText(cursor.getString(COL_HOME));
+        holder.homeName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, Utilities.getTeamCrestByTeamName(cursor.getString(COL_HOME), view.getContext()), null, null);
         holder.awayName.setText(cursor.getString(COL_AWAY));
+        holder.awayName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, Utilities.getTeamCrestByTeamName(cursor.getString(COL_AWAY), view.getContext()), null, null);
         holder.date.setText(cursor.getString(COL_MATCHTIME));
         holder.score.setText(Utilities.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
         holder.matchId = cursor.getDouble(COL_ID);
-        holder.homeCrest.setImageResource(Utilities.getTeamCrestByTeamName(cursor.getString(COL_HOME)));
-        holder.awayCrest.setImageResource(Utilities.getTeamCrestByTeamName(cursor.getString(COL_AWAY)));
         //Log.v(FetchScoreTask.LOG_TAG,holder.homeName.getText() + " Vs. " + holder.awayName.getText() +" id " + String.valueOf(holder.matchId));
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(detailMatchId));
-        LayoutInflater vi = (LayoutInflater) context.getApplicationContext()
-                                                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View      v         = vi.inflate(R.layout.detail_fragment, null);
-        ViewGroup container = (ViewGroup) view.findViewById(R.id.details_fragment_container);
+        LayoutInflater vi        = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View           v         = vi.inflate(R.layout.detail_fragment, null);
+        ViewGroup      container = (ViewGroup) view.findViewById(R.id.details_fragment_container);
         if (holder.matchId == detailMatchId)
         {
             //Log.v(FetchScoreTask.LOG_TAG,"will insert extraView");

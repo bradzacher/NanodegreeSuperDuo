@@ -1,5 +1,10 @@
 package au.com.zacher.footballscores;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
+import android.view.View;
+
 /**
  * Created by yehya khaled on 3/3/2015.
  */
@@ -69,7 +74,9 @@ public class Utilities
         }
         else
         {
-            return String.valueOf(homeGoals) + " - " + String.valueOf(awayGoals);
+            String home = String.valueOf(homeGoals);
+            String away = String.valueOf(awayGoals);
+            return home + " - " + away;
         }
     }
 
@@ -105,5 +112,16 @@ public class Utilities
             default:
                 return R.drawable.no_icon;
         }
+    }
+
+    public static Drawable getTeamCrestByTeamName(String teamName, Context context)
+    {
+        int drawableId = Utilities.getTeamCrestByTeamName(teamName);
+        return context.getDrawable(drawableId);
+    }
+
+    public static boolean isRTL(Context context) {
+        Configuration config = context.getResources().getConfiguration();
+        return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL; // will always return LTR on android < 17
     }
 }
