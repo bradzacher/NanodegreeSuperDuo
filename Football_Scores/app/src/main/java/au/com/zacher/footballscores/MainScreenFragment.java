@@ -23,7 +23,8 @@ import au.com.zacher.footballscores.service.MyFetchService;
  */
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
-    public static final int SCORES_LOADER = 0;
+    public static final  int    SCORES_LOADER                    = 0;
+    private static final String FRAGMENT_DATE_SAVED_INSTANCE_KEY = "savedFragmentDate";
 
     public ScoresAdapter adapter;
     private String[] _fragmentDate     = new String[1];
@@ -43,8 +44,8 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     public void setFragmentDate(long date)
     {
         _fragmentDateLong = date;
-        Date fragmentDate = new Date(date);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date             fragmentDate = new Date(date);
+        SimpleDateFormat format       = new SimpleDateFormat("yyyy-MM-dd");
         _fragmentDate[0] = format.format(fragmentDate);
     }
 
@@ -56,6 +57,11 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState)
     {
+        if (savedInstanceState != null)
+        {
+            this.setFragmentDate(savedInstanceState.getLong(FRAGMENT_DATE_SAVED_INSTANCE_KEY));
+        }
+
         updateScores();
         View           rootView   = inflater.inflate(R.layout.fragment_main, container, false);
         final ListView score_list = (ListView) rootView.findViewById(R.id.scores_list);
@@ -114,5 +120,10 @@ public class MainScreenFragment extends Fragment implements LoaderManager.Loader
         adapter.swapCursor(null);
     }
 
-
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putLong(FRAGMENT_DATE_SAVED_INSTANCE_KEY, this.getFragmentDate());
+    }
 }
