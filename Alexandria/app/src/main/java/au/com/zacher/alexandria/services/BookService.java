@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,8 +88,20 @@ public class BookService extends IntentService
             return;
         }
 
+        long barcode;
+        try
+        {
+            barcode = Long.parseLong(ean);
+        }
+        catch (NumberFormatException ignored)
+        {
+            Toast.makeText(this.getBaseContext(), this.getText(R.string.scan_error_invalid_format), Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Uri uri = AlexandriaContract.BookEntry.buildBookUri(barcode);
         Cursor bookEntry = getContentResolver().query(
-                AlexandriaContract.BookEntry.buildBookUri(Long.parseLong(ean)),
+                uri,
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
                 null, // values for "where" clause

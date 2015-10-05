@@ -185,9 +185,8 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
 
     private boolean isTablet()
     {
-        return (getApplicationContext().getResources().getConfiguration().screenLayout
-                & Configuration.SCREENLAYOUT_SIZE_MASK)
-               >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        Configuration config = getApplicationContext().getResources().getConfiguration();
+        return (config.screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     @Override

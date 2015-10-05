@@ -1,7 +1,6 @@
 package au.com.zacher.alexandria;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,6 +9,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import au.com.zacher.alexandria.data.AlexandriaContract;
 import au.com.zacher.alexandria.services.BookService;
@@ -102,19 +105,10 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
             @Override
             public void onClick(View v)
             {
-                // This is the callback method that the system will invoke when your button is
-                // clicked. You might do this by launching another app or by including the
-                //functionality directly in this app.
-                // Hint: Use a Try/Catch block to handle the Intent dispatch gracefully, if you
-                // are using an external app.
-                //when you're done, remove the toast below.
-                Context      context  = getActivity();
-                CharSequence text     = "This button should let you scan a book for its barcode!";
-                int          duration = Toast.LENGTH_SHORT;
-
-                Toast toast = Toast.makeText(context, text, duration);
-                toast.show();
-
+                IntentIntegrator integrator = IntentIntegrator.forSupportFragment(AddBook.this);
+                integrator.setCaptureActivity(BarcodeScan.class);
+                integrator.setOrientationLocked(false);
+                integrator.initiateScan();
             }
         });
 
@@ -230,5 +224,36 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     {
         super.onAttach(activity);
         activity.setTitle(R.string.scan);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        /*if (requestCode == BarcodeScan.REQUEST_SCAN_START && resultCode == Activity.RESULT_OK)
+        {
+            String barcodeValue = data.getStringExtra(BarcodeScan.SCAN_RESULT_VALUE_KEY);
+            _ean.setText(barcodeValue);
+        }*/
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null)
+        {
+            if (result.getContents() == null)
+            {
+                Log.d("MainActivity", "Cancelled scan");
+            }
+            else
+            {
+                Log.d("MainActivity", "Scanned");
+                String barcode = result.getContents();
+                _ean.setText(barcode);
+            }
+        }
+        else
+        {
+            Log.d("MainActivity", "Weird");
+            // This is important, otherwise the result will not be passed to the fragment
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
