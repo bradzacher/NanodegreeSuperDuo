@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
  */
 public class DatabaseContract
 {
-    public static final String SCORES_TABLE = "ScoresTable";
+    public static final String SCORES_TABLE = "scores_table";
 
     public static final class ScoresTable implements BaseColumns
     {

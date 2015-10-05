@@ -56,7 +56,7 @@ public class ScoresAdapter extends CursorAdapter
                 cursor.getString(COL_HOME)));
         mHolder.awayCrest.setImageResource(Utilities.getTeamCrestByTeamName(
                 cursor.getString(COL_AWAY)
-                                                                            ));
+                                                                           ));
         //Log.v(FetchScoreTask.LOG_TAG,mHolder.homeName.getText() + " Vs. " + mHolder.awayName.getText() +" id " + String.valueOf(mHolder.matchId));
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(detailMatchId));
         LayoutInflater vi = (LayoutInflater) context.getApplicationContext()
