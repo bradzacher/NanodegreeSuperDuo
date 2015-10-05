@@ -35,6 +35,18 @@
                 android:value="au.com.zacher.footballscores.MainActivity"/>
         </activity>
         <service android:name=".service.MyFetchService"/>
+
+        <receiver
+            android:name=".widget.LatestMatchProvider"
+            android:label="@string/title_widget_latest_match">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="au.com.zacher.footballscores.MATCH_DATA_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/widget_info_latest_match"/>
+        </receiver>
+        <service android:name=".widget.LatestMatchIntentService" />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="api_key">11e06627e3314467a59acdf890648e82</string>
+    <string name="api_key" translatable="false">11e06627e3314467a59acdf890648e82</string>
 </resources>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="5dp">
+
+    <TextView
+        android:id="@+id/home_team"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="40"
+        android:gravity="center"
+        android:textSize="@dimen/TeamNames"
+        tools:drawableTop="@drawable/arsenal"
+        tools:text="Home Team Name"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="20"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/score_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textSize="@dimen/Score"
+            tools:text="3 - 1"/>
+
+        <TextView
+            android:id="@+id/data_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:focusable="false"
+            android:gravity="center"
+            tools:text="13:00"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/away_team"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="40"
+        android:gravity="center"
+        android:textSize="@dimen/TeamNames"
+        tools:drawableTop="@drawable/arsenal"
+        tools:text="Away Team Name"/>
+
+</LinearLayout>

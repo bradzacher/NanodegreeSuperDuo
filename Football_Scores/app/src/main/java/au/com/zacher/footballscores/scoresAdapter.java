@@ -49,13 +49,21 @@ public class ScoresAdapter extends CursorAdapter
     public void bindView(View view, final Context context, Cursor cursor)
     {
         final ViewHolder holder = (ViewHolder) view.getTag();
-        holder.homeName.setText(cursor.getString(COL_HOME));
-        holder.homeName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, Utilities.getTeamCrestByTeamName(cursor.getString(COL_HOME), view.getContext()), null, null);
-        holder.awayName.setText(cursor.getString(COL_AWAY));
-        holder.awayName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, Utilities.getTeamCrestByTeamName(cursor.getString(COL_AWAY), view.getContext()), null, null);
+        String homeTeamName = cursor.getString(COL_HOME),
+               awayTeamName = cursor.getString(COL_AWAY),
+               score = Utilities.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS));
+
+        holder.homeName.setText(homeTeamName);
+        holder.homeName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, Utilities.getTeamCrestDrawableByTeamName(homeTeamName, view.getContext()), null, null);
+        holder.awayName.setText(awayTeamName);
+        holder.awayName.setCompoundDrawablesRelativeWithIntrinsicBounds(null, Utilities.getTeamCrestDrawableByTeamName(awayTeamName, view.getContext()), null, null);
         holder.date.setText(cursor.getString(COL_MATCHTIME));
-        holder.score.setText(Utilities.getScores(cursor.getInt(COL_HOME_GOALS), cursor.getInt(COL_AWAY_GOALS)));
+        holder.score.setText(score);
         holder.matchId = cursor.getDouble(COL_ID);
+
+        String accessibilityStr = Utilities.getScoreItemAccessibilityString(homeTeamName, score, awayTeamName);
+        view.setContentDescription(accessibilityStr);
+
         //Log.v(FetchScoreTask.LOG_TAG,holder.homeName.getText() + " Vs. " + holder.awayName.getText() +" id " + String.valueOf(holder.matchId));
         //Log.v(FetchScoreTask.LOG_TAG,String.valueOf(detailMatchId));
         LayoutInflater vi        = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

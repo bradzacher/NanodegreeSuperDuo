@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -24,13 +25,15 @@ import java.util.Vector;
 
 import au.com.zacher.footballscores.DatabaseContract;
 import au.com.zacher.footballscores.R;
+import au.com.zacher.footballscores.Utilities;
 
 /**
  * Created by yehya khaled on 3/2/2015.
  */
 public class MyFetchService extends IntentService
 {
-    public static final String LOG_TAG = "MyFetchService";
+    public static final String BROADCAST_ACTION = "au.com.zacher.footballscores.MATCH_DATA_UPDATE";
+    public static final String LOG_TAG          = "MyFetchService";
 
     public MyFetchService()
     {
@@ -147,17 +150,10 @@ public class MyFetchService extends IntentService
         //JSON data
         // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
         // be updated. Feel free to use the codes
-        final String BUNDESLIGA1      = "394";
-        final String BUNDESLIGA2      = "395";
-        final String LIGUE1           = "396";
-        final String LIGUE2           = "397";
-        final String PREMIER_LEAGUE   = "398";
-        final String PRIMERA_DIVISION = "399";
-        final String SEGUNDA_DIVISION = "400";
-        final String SERIE_A          = "401";
-        final String PRIMERA_LIGA     = "402";
-        final String Bundesliga3      = "403";
-        final String EREDIVISIE       = "404";
+        final String[] LEAGUE_LIST = new String[Utilities.LEAGUE_LIST.length];
+        for (int i =0; i < Utilities.LEAGUE_LIST.length; i++) {
+            LEAGUE_LIST[i] = Integer.toString(Utilities.LEAGUE_LIST[i]);
+        }
 
 
         final String SEASON_LINK   = "http://api.football-data.org/alpha/soccerseasons/";
@@ -203,11 +199,14 @@ public class MyFetchService extends IntentService
                 //add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
-                if (League.equals(PREMIER_LEAGUE) ||
-                    League.equals(SERIE_A) ||
-                    League.equals(BUNDESLIGA1) ||
-                    League.equals(BUNDESLIGA2) ||
-                    League.equals(PRIMERA_DIVISION))
+                boolean found = false;
+                for (String s : LEAGUE_LIST) {
+                    if (s.equals(League)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found)
                 {
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
                             getString("href");
@@ -277,6 +276,9 @@ public class MyFetchService extends IntentService
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
             inserted_data = mContext.getContentResolver().bulkInsert(DatabaseContract.BASE_CONTENT_URI, insert_data);
+
+            Intent i = new Intent(BROADCAST_ACTION);
+            mContext.sendBroadcast(i);
 
             //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
         }

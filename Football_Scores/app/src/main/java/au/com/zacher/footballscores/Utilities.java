@@ -11,28 +11,53 @@ import android.view.View;
  */
 public class Utilities
 {
-    public static final int SERIE_A          = 357;
-    public static final int PREMIER_LEGAUE   = 354;
     public static final int CHAMPIONS_LEAGUE = 362;
-    public static final int PRIMERA_DIVISION = 358;
-    public static final int BUNDESLIGA       = 351;
+    public static final int BUNDESLIGA1      = 394;
+    public static final int BUNDESLIGA2      = 395;
+    public static final int BUNDESLIGA3      = 396;
+    public static final int PREMIER_LEAGUE   = 398;
+    public static final int PRIMERA_DIVISION = 399;
+    public static final int SEGUNDA_DIVISION = 400;
+    public static final int SERIE_A          = 401;
+    public static final int PRIMERA_LIGA     = 402;
+    public static final int EREDIVISIE       = 404;
+    public static final int[] LEAGUE_LIST = new int[] {
+            CHAMPIONS_LEAGUE,
+            BUNDESLIGA1,
+            BUNDESLIGA2,
+            BUNDESLIGA3,
+            PREMIER_LEAGUE,
+            PRIMERA_DIVISION,
+            SEGUNDA_DIVISION,
+            SERIE_A,
+            PRIMERA_LIGA,
+            EREDIVISIE
+    };
 
     public static String getLeague(int leagueNum)
     {
         switch (leagueNum)
         {
-            case SERIE_A:
-                return "Seria A";
-            case PREMIER_LEGAUE:
-                return "Premier League";
             case CHAMPIONS_LEAGUE:
                 return "UEFA Champions League";
+            case BUNDESLIGA1:
+            case BUNDESLIGA2:
+            case BUNDESLIGA3:
+                return "Bundesliga";
+            case PREMIER_LEAGUE:
+                return "Premier League";
             case PRIMERA_DIVISION:
                 return "Primera Division";
-            case BUNDESLIGA:
-                return "Bundesliga";
+            case SEGUNDA_DIVISION:
+                return "Segunda Division";
+            case SERIE_A:
+                return "Seria A";
+            case PRIMERA_LIGA:
+                return "Primera Liga";
+            case EREDIVISIE:
+                return "Eredivisie";
             default:
-                return "Not known League Please report";
+                return "Unknown league. Please report";
         }
     }
 
@@ -81,43 +106,30 @@ public class Utilities
         }
     }
 
-    public static int getTeamCrestByTeamName(String teamName)
+    public static int getTeamCrestByTeamName(String teamName, Context context)
     {
         if (teamName == null)
         {
             return R.drawable.no_icon;
         }
-        switch (teamName)
-        { //This is the set of icons that are currently in the app. Feel free to find and add more
-            //as you go.
-            case "Arsenal London FC":
-                return R.drawable.arsenal;
-            case "Manchester United FC":
-                return R.drawable.manchester_united;
-            case "Swansea City":
-                return R.drawable.swansea_city_afc;
-            case "Leicester City":
-                return R.drawable.leicester_city_fc_hd_logo;
-            case "Everton FC":
-                return R.drawable.everton_fc_logo1;
-            case "West Ham United FC":
-                return R.drawable.west_ham;
-            case "Tottenham Hotspur FC":
-                return R.drawable.tottenham_hotspur;
-            case "West Bromwich Albion":
-                return R.drawable.west_bromwich_albion_hd_logo;
-            case "Sunderland AFC":
-                return R.drawable.sunderland;
-            case "Stoke City FC":
-                return R.drawable.stoke_city;
-            default:
-                return R.drawable.no_icon;
+        // automatically pull the drawable based on the team name
+        teamName = teamName.replace(" FC", ""); // football club
+        teamName = teamName.replace("FC ", ""); // *
+        teamName = teamName.replace(" CF", ""); // club de futbol
+        teamName = teamName.replace(" AFC", ""); // association football club
+        teamName = teamName.replace(" ", "_"); // replace spaces
+        teamName = teamName.toLowerCase();
+        int resourceId = context.getResources().getIdentifier(teamName, "drawable", context.getPackageName());
+        if (resourceId == 0)
+        {
+            resourceId = R.drawable.no_icon;
         }
+        return resourceId;
     }
 
-    public static Drawable getTeamCrestByTeamName(String teamName, Context context)
+    public static Drawable getTeamCrestDrawableByTeamName(String teamName, Context context)
     {
-        int drawableId = Utilities.getTeamCrestByTeamName(teamName);
+        int drawableId = Utilities.getTeamCrestByTeamName(teamName, context);
         return ContextCompat.getDrawable(context, drawableId);
     }
 
@@ -125,5 +137,10 @@ public class Utilities
     {
         Configuration config = context.getResources().getConfiguration();
         return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
+
+    public static String getScoreItemAccessibilityString(String homeTeamName, String score, String awayTeamName)
+    {
+        return "Home: " + homeTeamName + ", Away: " + awayTeamName + ", Score: " + score + ".";
     }
 }
