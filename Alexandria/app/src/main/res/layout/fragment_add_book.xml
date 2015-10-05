@@ -50,7 +50,8 @@
             android:paddingRight="20dp"
             android:textIsSelectable="true"
             android:textSize="@dimen/head_line"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            tools:text="Book Title"/>
 
         <TextView
             android:id="@+id/bookSubTitle"
@@ -61,7 +62,7 @@
             android:layout_marginTop="10dp"
             android:ellipsize="end"
             android:maxLines="3"
-            />
+            tools:text="Book Subtitle"/>
 
         <TextView
             android:id="@+id/authors"
@@ -73,7 +74,7 @@
             android:layout_marginTop="20dp"
             android:gravity="end"
             android:textSize="@dimen/small_fontsize"
-            />
+            tools:text="AUTHORS"/>
 
         <ImageView
             android:id="@+id/bookCover"
@@ -82,6 +83,7 @@
             android:layout_alignLeft="@+id/eancontainer"
             android:layout_alignStart="@+id/eancontainer"
             android:layout_alignTop="@+id/authors"
+            android:src="@drawable/ic_launcher"
             android:contentDescription="@string/book_cover"/>
 
         <TextView
@@ -92,7 +94,8 @@
             android:layout_alignStart="@+id/eancontainer"
             android:layout_below="@+id/bookCover"
             android:layout_marginTop="20dp"
-            android:textSize="@dimen/small_fontsize"/>
+            android:textSize="@dimen/small_fontsize"
+            tools:text="CATEGORIES"/>
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -110,8 +113,7 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_action_discard"
                 android:text="@string/cancel_button"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible"/>
 
             <Button
                 android:id="@+id/save_button"
@@ -122,8 +124,7 @@
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_action_accept"
                 android:text="@string/ok_button"
-                android:visibility="invisible"
-                />
+                android:visibility="invisible"/>
 
         </LinearLayout>
 
