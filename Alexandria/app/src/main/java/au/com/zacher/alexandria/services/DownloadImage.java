@@ -23,6 +23,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap>
     protected Bitmap doInBackground(String... urls)
     {
         String urlDisplay = urls[0];
+
         Bitmap bookCover  = null;
         try
         {
@@ -31,7 +32,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap>
         }
         catch (Exception e)
         {
-            Log.e("Error", e.getMessage());
+            Log.e("Error", urlDisplay + "\n" + e.getMessage());
             e.printStackTrace();
         }
         return bookCover;
