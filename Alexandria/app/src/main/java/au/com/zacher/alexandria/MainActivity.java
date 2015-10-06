@@ -97,7 +97,7 @@ public class MainActivity extends ActionBarActivity implements NavigationDrawerF
         _title = getString(titleId);
     }
 
-    public void restoreActionBar()
+    private void restoreActionBar()
     {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);

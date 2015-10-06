@@ -13,7 +13,7 @@ import java.io.InputStream;
  */
 public class DownloadImage extends AsyncTask<String, Void, Bitmap>
 {
-    ImageView bmImage;
+    private final ImageView bmImage;
 
     public DownloadImage(ImageView bmImage)
     {
@@ -24,7 +24,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap>
     {
         String urlDisplay = urls[0];
 
-        Bitmap bookCover  = null;
+        Bitmap bookCover = null;
         try
         {
             InputStream in = new java.net.URL(urlDisplay).openStream();

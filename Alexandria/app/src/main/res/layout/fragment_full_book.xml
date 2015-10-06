@@ -30,6 +30,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_margin="10dp"
                     android:paddingRight="20dp"
+                    android:paddingLeft="20dp"
                     android:textIsSelectable="true"
                     android:textSize="@dimen/head_line"
                     android:textStyle="bold"
@@ -52,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/fullBookCover"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="10dp"
+                    android:layout_marginRight="20dp"
                     android:layout_toEndOf="@+id/fullBookCover"
                     android:layout_toRightOf="@+id/fullBookCover"
                     android:ellipsize="end"
@@ -68,6 +69,7 @@
                     android:layout_below="@+id/fullBookCover"
                     android:layout_margin="10dp"
                     android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:ellipsize="end"
                     tools:text="DESCRIPTION GOES HERE"/>
 
@@ -85,7 +87,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         tools:text="CATEGORIES"/>
 
                     <TextView
@@ -93,7 +95,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:gravity="right|top"
+                        android:gravity="end|top"
                         android:textStyle="bold"
                         tools:text="AUTHORS"/>
                 </LinearLayout>
@@ -106,7 +108,7 @@
                     android:layout_alignEnd="@+id/fullBookTitle"
                     android:layout_alignParentTop="true"
                     android:layout_alignRight="@+id/fullBookTitle"
-                    android:layout_gravity="right|top"
+                    android:layout_gravity="end|top"
                     android:contentDescription="@string/back_button"
                     android:onClick="goBack"
                     android:src="@drawable/ic_action_undo"/>
@@ -119,7 +121,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:layout_gravity="bottom|end"
             android:orientation="horizontal">
 
             <Button
@@ -129,7 +131,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
                 android:drawableLeft="@drawable/ic_action_discard"
+                android:drawableStart="@drawable/ic_action_discard"
                 android:text="@string/delete"/>
         </LinearLayout>
 

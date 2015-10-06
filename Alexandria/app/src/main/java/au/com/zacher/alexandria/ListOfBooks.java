@@ -26,17 +26,8 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     private BookListAdapter _bookListAdapter;
     private ListView        _bookList;
     private EditText        searchText;
-    private int _position = ListView.INVALID_POSITION;
 
-    public ListOfBooks()
-    {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
+    public ListOfBooks() { }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -125,10 +116,6 @@ public class ListOfBooks extends Fragment implements LoaderManager.LoaderCallbac
     public void onLoadFinished(Loader<Cursor> loader, Cursor data)
     {
         _bookListAdapter.swapCursor(data);
-        if (_position != ListView.INVALID_POSITION)
-        {
-            _bookList.smoothScrollToPosition(_position);
-        }
     }
 
     @Override

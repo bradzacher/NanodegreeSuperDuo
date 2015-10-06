@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -32,14 +31,9 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
 {
     private static final String TAG           = "INTENT_TO_SCAN_ACTIVITY";
     private final        String EAN_CONTENT   = "eanContent";
-    private static final String SCAN_FORMAT   = "scanFormat";
-    private static final String SCAN_CONTENTS = "scanContents";
     private final        int    LOADER_ID     = 1;
     private EditText _ean;
     private View     _rootView;
-
-    private String _scanFormat   = "Format:";
-    private String _scanContents = "Contents:";
 
 
     public AddBook()
@@ -146,11 +140,7 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
     private void restartLoader()
     {
         LoaderManager manager = getLoaderManager();
-        // make sure we have a loader before trying to restart it
-        if (manager.getLoader(LOADER_ID) != null)
-        {
-            manager.restartLoader(LOADER_ID, null, this);
-        }
+        manager.restartLoader(LOADER_ID, null, this);
     }
 
     @Override
@@ -204,9 +194,14 @@ public class AddBook extends Fragment implements LoaderManager.LoaderCallbacks<C
         ((TextView) _rootView.findViewById(R.id.bookSubTitle)).setText(bookSubTitle);
 
         String   authors    = data.getString(data.getColumnIndex(AlexandriaContract.AuthorEntry.AUTHOR));
-        String[] authorsArr = authors.split(",");
+        String[] authorsArr = new String[0];
+        String authorsStr = "";
+        if (authors != null) {
+            authorsArr = authors.split(",");
+            authorsStr = authors.replace(",", "\n");
+        }
         ((TextView) _rootView.findViewById(R.id.authors)).setLines(authorsArr.length);
-        ((TextView) _rootView.findViewById(R.id.authors)).setText(authors.replace(",", "\n"));
+        ((TextView) _rootView.findViewById(R.id.authors)).setText(authorsStr);
         String imgUrl = data.getString(data.getColumnIndex(AlexandriaContract.BookEntry.IMAGE_URL));
         if (Patterns.WEB_URL.matcher(imgUrl).matches())
         {

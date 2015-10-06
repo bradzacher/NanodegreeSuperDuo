@@ -24,7 +24,7 @@
     <string name="title_activity_camera">Scan Barcode</string>
     <string name="action_share">Share</string>
     <string name="back_button">go back</string>
-    <string name="share_text">A must read book: </string>
+    <string name="share_text">A must read book: %1$s</string>
 
     <string name="about_text">This application gets book information from a Google API. All titles, cover images, and author information come from there.
         Barcode scanning functionality provided by the ZXing library (https://github.com/zxing/zxing/) care of the ZXing Android Embedded library (https://github.com/journeyapps/zxing-android-embedded).
