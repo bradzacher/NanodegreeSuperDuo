@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity
 {
-    public static final  String LOG_TAG  = "MainActivity";
+    private static final String LOG_TAG  = "MainActivity";
     private static final String SAVE_TAG = "Save Test";
 
     public static int selectedMatchId;

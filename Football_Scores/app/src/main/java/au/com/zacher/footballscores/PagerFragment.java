@@ -20,10 +20,10 @@ import java.text.SimpleDateFormat;
  */
 public class PagerFragment extends Fragment
 {
-    public static final int NUM_PAGES = 5;
+    private static final int NUM_PAGES = 5;
 
     public ViewPager pagerHandler;
-    private MainScreenFragment[] _viewFragments = new MainScreenFragment[NUM_PAGES];
+    private final MainScreenFragment[] _viewFragments = new MainScreenFragment[NUM_PAGES];
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
@@ -45,8 +45,7 @@ public class PagerFragment extends Fragment
 
     private long calculateTime(int position)
     {
-        long time = System.currentTimeMillis() + (position - 2) * 86400000;
-        return time;
+        return System.currentTimeMillis() + (position - 2) * 86400000;
     }
 
     private class PageAdapter extends FragmentStatePagerAdapter
@@ -63,8 +62,7 @@ public class PagerFragment extends Fragment
             // reverse the pager direction on RTL languages
             if (Utilities.isRTL(pagerHandler.getContext()))
             {
-                int newI = (NUM_PAGES - i - 1) % NUM_PAGES;
-                i = newI;
+                i = (NUM_PAGES - i - 1) % NUM_PAGES;
             }
             return i;
         }
@@ -85,7 +83,7 @@ public class PagerFragment extends Fragment
         @Override
         public CharSequence getPageTitle(int position)
         {
-            MainScreenFragment fragment = (MainScreenFragment)this.getItem(position);
+            MainScreenFragment fragment = (MainScreenFragment) this.getItem(position);
             return getDayName(getActivity(), fragment.getFragmentDate());
         }
 

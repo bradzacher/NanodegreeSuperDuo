@@ -11,17 +11,17 @@ import android.view.View;
  */
 public class Utilities
 {
-    public static final int CHAMPIONS_LEAGUE = 362;
-    public static final int BUNDESLIGA1      = 394;
-    public static final int BUNDESLIGA2      = 395;
-    public static final int BUNDESLIGA3      = 396;
-    public static final int PREMIER_LEAGUE   = 398;
-    public static final int PRIMERA_DIVISION = 399;
-    public static final int SEGUNDA_DIVISION = 400;
-    public static final int SERIE_A          = 401;
-    public static final int PRIMERA_LIGA     = 402;
-    public static final int EREDIVISIE       = 404;
-    public static final int[] LEAGUE_LIST = new int[] {
+    public static final int   CHAMPIONS_LEAGUE = 362;
+    public static final int   BUNDESLIGA1      = 394;
+    public static final int   BUNDESLIGA2      = 395;
+    public static final int   BUNDESLIGA3      = 396;
+    public static final int   PREMIER_LEAGUE   = 398;
+    public static final int   PRIMERA_DIVISION = 399;
+    public static final int   SEGUNDA_DIVISION = 400;
+    public static final int   SERIE_A          = 401;
+    public static final int   PRIMERA_LIGA     = 402;
+    public static final int   EREDIVISIE       = 404;
+    public static final int[] LEAGUE_LIST      = new int[] {
             CHAMPIONS_LEAGUE,
             BUNDESLIGA1,
             BUNDESLIGA2,
@@ -34,61 +34,61 @@ public class Utilities
             EREDIVISIE
     };
 
-    public static String getLeague(int leagueNum)
+    public static String getLeague(Context context, int leagueNum)
     {
         switch (leagueNum)
         {
             case CHAMPIONS_LEAGUE:
-                return "UEFA Champions League";
+                return context.getString(R.string.league_champions_league);
             case BUNDESLIGA1:
             case BUNDESLIGA2:
             case BUNDESLIGA3:
-                return "Bundesliga";
+                return context.getString(R.string.league_bundesliga);
             case PREMIER_LEAGUE:
-                return "Premier League";
+                return context.getString(R.string.league_premier_league);
             case PRIMERA_DIVISION:
-                return "Primera Division";
+                return context.getString(R.string.league_primera_division);
             case SEGUNDA_DIVISION:
-                return "Segunda Division";
+                return context.getString(R.string.league_segunda_division);
             case SERIE_A:
-                return "Seria A";
+                return context.getString(R.string.league_serie_a);
             case PRIMERA_LIGA:
-                return "Primera Liga";
+                return context.getString(R.string.league_primera_liga);
             case EREDIVISIE:
-                return "Eredivisie";
+                return context.getString(R.string.league_eredivisie);
             default:
-                return "Unknown league. Please report";
+                return context.getString(R.string.league_unknown);
         }
     }
 
-    public static String getMatchDay(int matchDay, int leagueNum)
+    public static String getMatchDay(Context context, int matchDay, int leagueNum)
     {
         if (leagueNum == CHAMPIONS_LEAGUE)
         {
             if (matchDay <= 6)
             {
-                return "Group Stages, Matchday : 6";
+                return context.getString(R.string.matchday_group_stages);
             }
             else if (matchDay == 7 || matchDay == 8)
             {
-                return "First Knockout round";
+                return context.getString(R.string.matchday_first_knockout);
             }
             else if (matchDay == 9 || matchDay == 10)
             {
-                return "QuarterFinal";
+                return context.getString(R.string.matchday_quarterfinal);
             }
             else if (matchDay == 11 || matchDay == 12)
             {
-                return "SemiFinal";
+                return context.getString(R.string.matchday_semifinal);
             }
             else
             {
-                return "Final";
+                return context.getString(R.string.matchday_final);
             }
         }
         else
         {
-            return "Matchday : " + String.valueOf(matchDay);
+            return context.getString(R.string.matchday_unknown, matchDay);
         }
     }
 
@@ -139,8 +139,8 @@ public class Utilities
         return config.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     }
 
-    public static String getScoreItemAccessibilityString(String homeTeamName, String score, String awayTeamName)
+    public static String getScoreItemAccessibilityString(Context context, String homeTeamName, String score, String awayTeamName)
     {
-        return "Home: " + homeTeamName + ", Away: " + awayTeamName + ", Score: " + score + ".";
+        return context.getString(R.string.score_item_accessibility_string, homeTeamName, awayTeamName, score);
     }
 }

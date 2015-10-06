@@ -8,11 +8,11 @@ import android.widget.TextView;
  */
 public class ViewHolder
 {
-    public TextView homeName;
-    public TextView awayName;
-    public TextView score;
-    public TextView date;
-    public double   matchId;
+    public final TextView homeName;
+    public final TextView awayName;
+    public final TextView score;
+    public final TextView date;
+    public       double   matchId;
 
     public ViewHolder(View view)
     {

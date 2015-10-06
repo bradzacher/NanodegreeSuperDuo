@@ -23,12 +23,11 @@ import au.com.zacher.footballscores.service.MyFetchService;
  */
 public class MainScreenFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>
 {
-    public static final  int    SCORES_LOADER                    = 0;
+    private static final int    SCORES_LOADER                    = 0;
     private static final String FRAGMENT_DATE_SAVED_INSTANCE_KEY = "savedFragmentDate";
 
-    public ScoresAdapter adapter;
-    private String[] _fragmentDate     = new String[1];
-    private int      _lastSelectedItem = -1;
+    private ScoresAdapter adapter;
+    private final String[] _fragmentDate = new String[1];
     private long _fragmentDateLong;
 
     public MainScreenFragment()

@@ -81,7 +81,7 @@ public class LatestMatchIntentService extends IntentService
         homeTeamName = cursor.getString(ScoresAdapter.COL_HOME);
         awayTeamName = cursor.getString(ScoresAdapter.COL_AWAY);
         time = cursor.getString(ScoresAdapter.COL_MATCHTIME);
-        accessibilityStr = Utilities.getScoreItemAccessibilityString(homeTeamName, score, awayTeamName);
+        accessibilityStr = Utilities.getScoreItemAccessibilityString(getApplicationContext(), homeTeamName, score, awayTeamName);
 
         Log.d("TAG", "WIDGET UPDATED:");
         Log.d("TAG", score);

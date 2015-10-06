@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -32,8 +31,8 @@ import au.com.zacher.footballscores.Utilities;
  */
 public class MyFetchService extends IntentService
 {
-    public static final String BROADCAST_ACTION = "au.com.zacher.footballscores.MATCH_DATA_UPDATE";
-    public static final String LOG_TAG          = "MyFetchService";
+    public static final  String BROADCAST_ACTION = "au.com.zacher.footballscores.MATCH_DATA_UPDATE";
+    private static final String LOG_TAG          = "MyFetchService";
 
     public MyFetchService()
     {
@@ -71,7 +70,7 @@ public class MyFetchService extends IntentService
 
             // Read the input stream into a String
             InputStream inputStream = m_connection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             if (inputStream == null)
             {
                 // Nothing to do.
@@ -85,7 +84,8 @@ public class MyFetchService extends IntentService
                 // Since it's JSON, adding a newline isn't necessary (it won't affect parsing)
                 // But it does make debugging a *lot* easier if you print out the completed
                 // buffer for debugging.
-                buffer.append(line + "\n");
+                buffer.append(line);
+                buffer.append("\n");
             }
             if (buffer.length() == 0)
             {
@@ -151,7 +151,8 @@ public class MyFetchService extends IntentService
         // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
         // be updated. Feel free to use the codes
         final String[] LEAGUE_LIST = new String[Utilities.LEAGUE_LIST.length];
-        for (int i =0; i < Utilities.LEAGUE_LIST.length; i++) {
+        for (int i = 0; i < Utilities.LEAGUE_LIST.length; i++)
+        {
             LEAGUE_LIST[i] = Integer.toString(Utilities.LEAGUE_LIST[i]);
         }
 
@@ -171,15 +172,15 @@ public class MyFetchService extends IntentService
         final String MATCH_DAY     = "matchday";
 
         //Match data
-        String League     = null;
-        String mDate      = null;
-        String mTime      = null;
-        String Home       = null;
-        String Away       = null;
-        String Home_goals = null;
-        String Away_goals = null;
-        String match_id   = null;
-        String match_day  = null;
+        String League;
+        String mDate;
+        String mTime;
+        String Home;
+        String Away;
+        String Home_goals;
+        String Away_goals;
+        String match_id;
+        String match_day;
 
 
         try
@@ -188,7 +189,7 @@ public class MyFetchService extends IntentService
 
 
             //ContentValues to be inserted
-            Vector<ContentValues> values = new Vector<ContentValues>(matches.length());
+            Vector<ContentValues> values = new Vector<>(matches.length());
             for (int i = 0; i < matches.length(); i++)
             {
 
@@ -200,8 +201,10 @@ public class MyFetchService extends IntentService
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
                 boolean found = false;
-                for (String s : LEAGUE_LIST) {
-                    if (s.equals(League)) {
+                for (String s : LEAGUE_LIST)
+                {
+                    if (s.equals(League))
+                    {
                         found = true;
                         break;
                     }
@@ -272,10 +275,9 @@ public class MyFetchService extends IntentService
                     values.add(match_values);
                 }
             }
-            int inserted_data = 0;
             ContentValues[] insert_data = new ContentValues[values.size()];
             values.toArray(insert_data);
-            inserted_data = mContext.getContentResolver().bulkInsert(DatabaseContract.BASE_CONTENT_URI, insert_data);
+            mContext.getContentResolver().bulkInsert(DatabaseContract.BASE_CONTENT_URI, insert_data);
 
             Intent i = new Intent(BROADCAST_ACTION);
             mContext.sendBroadcast(i);

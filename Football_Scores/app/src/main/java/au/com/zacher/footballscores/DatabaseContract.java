@@ -50,7 +50,7 @@ public class DatabaseContract
     }
 
     //URI data
-    public static final String CONTENT_AUTHORITY = "au.com.zacher.footballscores";
-    public static final String PATH              = "scores";
-    public static       Uri    BASE_CONTENT_URI  = Uri.parse("content://" + CONTENT_AUTHORITY);
+    private static final String CONTENT_AUTHORITY = "au.com.zacher.footballscores";
+    private static final String PATH              = "scores";
+    public static final  Uri    BASE_CONTENT_URI  = Uri.parse("content://" + CONTENT_AUTHORITY);
 }

@@ -5,23 +5,22 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 /**
  * Created by yehya khaled on 2/25/2015.
  */
 public class ScoresProvider extends ContentProvider
 {
-    private static final int                MATCHES             = 100;
-    private static final int                MATCHES_WITH_LEAGUE = 101;
-    private static final int                MATCHES_WITH_ID     = 102;
-    private static final int                MATCHES_WITH_DATE   = 103;
-    private static final SQLiteQueryBuilder SCORE_QUERY         = new SQLiteQueryBuilder();
-    private static final String             SCORES_BY_LEAGUE    = DatabaseContract.ScoresTable.LEAGUE_COL + " = ?";
-    private static final String             SCORES_BY_DATE      = DatabaseContract.ScoresTable.DATE_COL + " LIKE ?";
-    private static final String             SCORES_BY_ID        = DatabaseContract.ScoresTable.MATCH_ID + " = ?";
-    private              UriMatcher         _uriMatcher         = buildUriMatcher();
+    private static final int        MATCHES             = 100;
+    private static final int        MATCHES_WITH_LEAGUE = 101;
+    private static final int        MATCHES_WITH_ID     = 102;
+    private static final int        MATCHES_WITH_DATE   = 103;
+    private static final String     SCORES_BY_LEAGUE    = DatabaseContract.ScoresTable.LEAGUE_COL + " = ?";
+    private static final String     SCORES_BY_DATE      = DatabaseContract.ScoresTable.DATE_COL + " LIKE ?";
+    private static final String     SCORES_BY_ID        = DatabaseContract.ScoresTable.MATCH_ID + " = ?";
+    private final        UriMatcher _uriMatcher         = buildUriMatcher();
     private static ScoresDBHelper _openHelper;
 
     static UriMatcher buildUriMatcher()
@@ -139,7 +138,7 @@ public class ScoresProvider extends ContentProvider
     }
 
     @Override
-    public int bulkInsert(Uri uri, ContentValues[] values)
+    public int bulkInsert(Uri uri, @NonNull ContentValues[] values)
     {
         SQLiteDatabase db = _openHelper.getWritableDatabase();
         //db.delete(DatabaseContract.SCORES_TABLE,null,null);
