@@ -147,12 +147,6 @@ public class BookDetail extends Fragment implements LoaderManager.LoaderCallback
 
         String categories = data.getString(data.getColumnIndex(AlexandriaContract.CategoryEntry.CATEGORY));
         ((TextView) _rootView.findViewById(R.id.categories)).setText(categories);
-
-        if (_rootView.findViewById(R.id.right_container) != null)
-        {
-            _rootView.findViewById(R.id.backButton).setVisibility(View.INVISIBLE);
-        }
-
     }
 
     @Override
